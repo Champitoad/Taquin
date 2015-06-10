@@ -1,0 +1,32 @@
+= Projet IHM - The Taquin Project
+
+Dossier de conception
+
+== Schéma de l'interface graphique
+
+== Liste des fonctionnalités du programme
+
+=== Fonctionnalités de base
+
+* Démarrer une partie
+* Arrêter la partie en cours
+* Déplacer une case numérotée dans une case vide
+* Message "Gagné"
+* Aide utilisateur : règles du jeu
+
+=== Fonctionnalités avancées
+
+* Configurer la couleur de la grille
+* Choisir d'afficher une image au lieu de chiffres
+* Aide utilisateur : Proposition de coup suivant
+* Aide utilisateur : Solution complète
+
+=== Fonctionnalités supplémentaires
+
+* Sauvegarder et charger une partie
+* Importer une image personnelle
+
+== Algorithmes
+
+== Architecture des classes
+
