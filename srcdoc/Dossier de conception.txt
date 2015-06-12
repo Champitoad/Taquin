@@ -4,16 +4,16 @@ Dossier de conception
 
 == Schéma de l'interface graphique
 
-Fenêtre principale
+==== Fenêtre principale
 image:../srcdoc/Accueil.png[]
 
-Menu d'aide
+==== Menu d'aide
 image:../srcdoc/ClicAide.png[]
 
-Menu des paramètres
+==== Menu des paramètres
 image:../srcdoc/ClicParam.png[]
 
-Menu de lancement de partie
+==== Menu de lancement de partie
 image:../srcdoc/ClicPartie.png[]
 
 == Liste des fonctionnalités du programme
