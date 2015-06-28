@@ -5,9 +5,12 @@ import java.util.Random;
 public class GrilleTaquin
 {
 	private final Random RND = new Random();
+	private Direction[] memCoup;
 	
 	private int[][] matrice;
 	private Vector caseVide;
+	
+	private PileCoups pile;
 	
 	public GrilleTaquin()
 	{
@@ -28,6 +31,10 @@ public class GrilleTaquin
 	
 	public Vector getCaseVide(){
 		return caseVide;
+	}
+	
+	public PileCoups getPileCoups(){
+		return pile;
 	}
 	
 	public void deplacer(Direction direction) throws ArrayIndexOutOfBoundsException
@@ -64,14 +71,20 @@ public class GrilleTaquin
 		Direction direction;
 		Direction[] directions = Direction.class.getEnumConstants();
 		
+		memCoup = new Direction [nbMelanges];
 		int i = 0;
 		while(i < nbMelanges) {
 			direction = directions[RND.nextInt(directions.length)];
 			try {
+				memCoup[i] = direction;
 				deplacer(direction);
+				
 				i++;
 			} catch(ArrayIndexOutOfBoundsException e) {}
 		}
+		
+		pile = new PileCoups(memCoup);
+		
 	}
 	
 	public String toString()

@@ -31,18 +31,38 @@ public class EcouteurCase implements ActionListener {
 		if(caseVide.x == i && caseVide.y == j - 1){
 			this.partie.deplacer(Direction.HAUT);
 			parent.updateTabCases();
+			if(this.partie.getGrille().getPileCoups().getResolution() == Direction.BAS){
+				this.partie.getGrille().getPileCoups().depiler();
+			}else {
+				this.partie.getGrille().getPileCoups().empiler(Direction.HAUT);
+			}
 		}
 		if(caseVide.x == i && caseVide.y == j + 1){
 			this.partie.deplacer(Direction.BAS);
 			parent.updateTabCases();
+			if(this.partie.getGrille().getPileCoups().getResolution() == Direction.HAUT){
+				this.partie.getGrille().getPileCoups().depiler();
+			}else {
+				this.partie.getGrille().getPileCoups().empiler(Direction.BAS);
+			}
 		}
 		if(caseVide.x == i - 1 && caseVide.y == j){
 			this.partie.deplacer(Direction.GAUCHE);
 			parent.updateTabCases();
+			if(this.partie.getGrille().getPileCoups().getResolution() == Direction.DROITE){
+				this.partie.getGrille().getPileCoups().depiler();
+			}else {
+				this.partie.getGrille().getPileCoups().empiler(Direction.GAUCHE);
+			}
 		}
 		if(caseVide.x == i + 1 && caseVide.y == j){
 			this.partie.deplacer(Direction.DROITE);
 			parent.updateTabCases();
+			if(this.partie.getGrille().getPileCoups().getResolution() == Direction.GAUCHE){
+				this.partie.getGrille().getPileCoups().depiler();
+			}else {
+				this.partie.getGrille().getPileCoups().empiler(Direction.DROITE);
+			}
 		}
 		parent.fin();
 		

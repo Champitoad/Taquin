@@ -8,8 +8,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javafx.scene.layout.Border;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -22,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import model.Direction;
 import controller.Partie;
 
 public class FenetrePrincipale extends JFrame {
@@ -36,6 +35,7 @@ public class FenetrePrincipale extends JFrame {
 	JPanel panneauDeJeu;
 	JMenuItem itemNouvellePartie;
 	JMenuItem itemArreterPartie;
+	JMenuItem itemCoupSuivantAide;
 
 	public FenetrePrincipale() {
 		super("Taquin");
@@ -127,6 +127,7 @@ public class FenetrePrincipale extends JFrame {
 				validate();
 				itemArreterPartie.setEnabled(true);
 				itemNouvellePartie.setEnabled(false);
+				itemCoupSuivantAide.setEnabled(true);
 	        }
 			
 		});
@@ -151,6 +152,7 @@ public class FenetrePrincipale extends JFrame {
 				validate();
 				itemArreterPartie.setEnabled(false);
 				itemNouvellePartie.setEnabled(true);
+				itemCoupSuivantAide.setEnabled(false);
 	        }
 			
 		});
@@ -180,7 +182,7 @@ public class FenetrePrincipale extends JFrame {
 		menuParametre.add(itemImageParametre);
 		
 		JMenuItem itemRegleAide = new JMenuItem("Règles");
-		JMenuItem itemCoupSuivantAide = new JMenuItem("Coup Suivant");
+		itemCoupSuivantAide = new JMenuItem("Coup Suivant");
 		itemCoupSuivantAide.setEnabled(false);
 		JMenuItem itemSolutionAide = new JMenuItem("Solution");
 		itemSolutionAide.setEnabled(false);
@@ -211,7 +213,22 @@ public class FenetrePrincipale extends JFrame {
 	}
 	
 	private void aideCoupSuivant(){
-		
+		Direction prochainCoup = partie.getGrille().getPileCoups().getResolution();
+		partie.getGrille().getPileCoups().depiler();
+		if(prochainCoup == Direction.BAS){
+			partie.deplacer(Direction.HAUT);
+		}
+		if(prochainCoup == Direction.HAUT){
+			partie.deplacer(Direction.BAS);
+		}
+		if(prochainCoup == Direction.DROITE){
+			partie.deplacer(Direction.GAUCHE);
+		}
+		if(prochainCoup == Direction.GAUCHE){
+			partie.deplacer(Direction.DROITE);
+		}
+		updateTabCases();
+		fin();
 	}
 	
 	private void solution() {
