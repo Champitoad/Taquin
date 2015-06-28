@@ -18,6 +18,8 @@ public class FenetrePrincipale extends JFrame {
 	private JButton[] cases = new JButton[16];
 	private Color couleur = Color.BLUE;
 	JPanel panneauDeJeu;
+	JMenuItem itemNouvellePartie;
+	JMenuItem itemArreterPartie;
 
 	public FenetrePrincipale() {
 		super("Taquin");
@@ -73,8 +75,8 @@ public class FenetrePrincipale extends JFrame {
 		menuBar.add(menuParametre);
 		menuBar.add(menuAide);
 		
-		JMenuItem itemNouvellePartie = new JMenuItem("Nouvelle ..");
-		JMenuItem itemArreterPartie = new JMenuItem("Arrêter ..");
+		itemNouvellePartie = new JMenuItem("Nouvelle ..");
+		itemArreterPartie = new JMenuItem("Arrêter ..");
 		
 		itemArreterPartie.setEnabled(false);
 		
@@ -224,6 +226,40 @@ public class FenetrePrincipale extends JFrame {
 		
 		updateCases(partie.getGrille().getMatrice());
 		validate();
+	}
+
+	public void fin(){
+		int[][] matrice = partie.getGrille().getMatrice();
+		int cpt = 1;
+		boolean gagner = true;
+		
+		for(int i = 0; i < matrice.length; i++){
+			for(int j = 0; j < matrice[i].length; j++){
+				if(matrice[i][j] != cpt && matrice[i][j] > 0){
+					gagner = false;
+					break;
+				} 
+				cpt++;
+			}
+		}
+		if(gagner){
+			JOptionPane.showMessageDialog(this, "Vous avez gagner !", "BRAVO !!!", JOptionPane.PLAIN_MESSAGE,null);
+			partie.arreter();
+			panneauDeJeu.removeAll();
+
+			for(int i = 0; i < 16; i++) {
+
+				JButton bouton = new JButton();
+				bouton.setFont(new Font("Arial", Font.PLAIN, 20));
+				cases[i] = bouton;
+				panneauDeJeu.add(cases[i]);
+			}
+			
+			updateCases(partie.getGrille().getMatrice());
+			validate();
+			itemArreterPartie.setEnabled(false);
+			itemNouvellePartie.setEnabled(true);
+		}
 	}
 	
 	public static void main(String[] args) {

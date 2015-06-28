@@ -44,7 +44,7 @@ public class EcouteurCase implements ActionListener {
 			this.partie.deplacer(Direction.DROITE);
 			parent.updateTabCases();
 		}
-		System.out.println(partie.getGrille().toString());
+		parent.fin();
 		
 	}
 
