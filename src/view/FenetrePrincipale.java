@@ -14,7 +14,9 @@ public class FenetrePrincipale extends JFrame {
 	//private ChoixCouleur choixCouleur;
 	//private ChoixImage choixImage;
 	private Regles regles;
+	private ChoixCouleur choixCouleur;
 	private JButton[] cases = new JButton[16];
+	private Color couleur = Color.BLUE;
 
 	public FenetrePrincipale() {
 		super("Taquin");
@@ -24,7 +26,7 @@ public class FenetrePrincipale extends JFrame {
 		    e.getMessage();
 		}
 		partie = new Partie();
-		//choixCouleur = new ChoixCouleur("Choix couleur");
+		choixCouleur = new ChoixCouleur(this, "Choix couleur");
 		//choixImage = new ChoixImage("Choix image");
 		regles = new Regles(this, "Règles");
 		setResizable(false);
@@ -43,7 +45,7 @@ public class FenetrePrincipale extends JFrame {
 		
 		JPanel panneauDeJeu = new JPanel(new GridLayout(4,4));
 		panneauDeJeu.setPreferredSize(new Dimension(400, 400));
-		panneauDeJeu.setBackground(Color.BLUE);
+		panneauDeJeu.setBackground(couleur);
 		
 		for(int i = 0; i < 16; i++) {
 			JButton bouton = new JButton();
@@ -103,6 +105,8 @@ public class FenetrePrincipale extends JFrame {
 		itemCouleurParametre.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				//choixCouleur.setVisible(true);
+				couleur = JColorChooser.showDialog(null, "couleur du fond", couleur);
+				getContentPane().getComponent(0).setBackground(couleur);
 	        }
 		});
 		

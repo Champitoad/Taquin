@@ -2,6 +2,8 @@ package view;
 
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -20,6 +22,17 @@ public class Regles extends JDialog{
     	
     	main.add(regles, BorderLayout.CENTER);
     	
+    	JButton ok = new JButton("ok");
+    	
+    	ok.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				
+			}
+    		
+    	});
+    	main.add(ok, BorderLayout.SOUTH);
     	add(main);
     	pack();
 	 }
