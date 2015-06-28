@@ -27,6 +27,10 @@ public class PileCoups {
 		this.nbResolution --;
 	}
 	
+	public int getNbCoup(){
+		return nbResolution;
+	}
+	
 	public void empiler(Direction dir){
 		Direction[] olderResolution = resolution;
 		

@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -36,6 +38,8 @@ public class FenetrePrincipale extends JFrame {
 	JMenuItem itemNouvellePartie;
 	JMenuItem itemArreterPartie;
 	JMenuItem itemCoupSuivantAide;
+	JMenuItem itemSolutionAide;
+	Timer t;
 
 	public FenetrePrincipale() {
 		super("Taquin");
@@ -128,6 +132,7 @@ public class FenetrePrincipale extends JFrame {
 				itemArreterPartie.setEnabled(true);
 				itemNouvellePartie.setEnabled(false);
 				itemCoupSuivantAide.setEnabled(true);
+				itemSolutionAide.setEnabled(true);
 	        }
 			
 		});
@@ -153,6 +158,7 @@ public class FenetrePrincipale extends JFrame {
 				itemArreterPartie.setEnabled(false);
 				itemNouvellePartie.setEnabled(true);
 				itemCoupSuivantAide.setEnabled(false);
+				itemSolutionAide.setEnabled(false);
 	        }
 			
 		});
@@ -184,7 +190,7 @@ public class FenetrePrincipale extends JFrame {
 		JMenuItem itemRegleAide = new JMenuItem("Règles");
 		itemCoupSuivantAide = new JMenuItem("Coup Suivant");
 		itemCoupSuivantAide.setEnabled(false);
-		JMenuItem itemSolutionAide = new JMenuItem("Solution");
+		itemSolutionAide = new JMenuItem("Solution");
 		itemSolutionAide.setEnabled(false);
 		
 		itemRegleAide.addActionListener(new ActionListener () {
@@ -201,7 +207,9 @@ public class FenetrePrincipale extends JFrame {
 		
 		itemSolutionAide.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				solution();
+
+				 t = new Timer();
+				 t.schedule(new MonAction(), 0, 1*1000);
 	        }
 		});
 		
@@ -210,6 +218,16 @@ public class FenetrePrincipale extends JFrame {
 		menuAide.add(itemSolutionAide);
 		
 		return menuBar;
+	}
+	class MonAction extends TimerTask {
+	    int nbrRepetitions = 3;
+
+	    public void run() {
+	      solution();
+	      if(partie.getGrille().getPileCoups().getNbCoup()==0){
+	    	  t.cancel();
+	      }
+	    }
 	}
 	
 	private void aideCoupSuivant(){
@@ -233,6 +251,32 @@ public class FenetrePrincipale extends JFrame {
 	
 	private void solution() {
 		
+			Direction prochainCoup = partie.getGrille().getPileCoups().getResolution();
+			partie.getGrille().getPileCoups().depiler();
+			if(prochainCoup == Direction.BAS){
+				partie.deplacer(Direction.HAUT);
+			}
+			if(prochainCoup == Direction.HAUT){
+				partie.deplacer(Direction.BAS);
+			}
+			if(prochainCoup == Direction.DROITE){
+				partie.deplacer(Direction.GAUCHE);
+			}
+			if(prochainCoup == Direction.GAUCHE){
+				partie.deplacer(Direction.DROITE);
+			}
+			updateTabCases();
+			fin();
+			revalidate();
+			getContentPane().revalidate();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+
 	}
 	
 	private void updateCases(int[][] matrice) {
