@@ -1,11 +1,27 @@
 package view;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javafx.scene.layout.Border;
 
-import model.Direction;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JColorChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import controller.Partie;
 
 public class FenetrePrincipale extends JFrame {
@@ -48,12 +64,16 @@ public class FenetrePrincipale extends JFrame {
 		
 		panneauDeJeu = new JPanel(new GridLayout(4,4));
 		panneauDeJeu.setPreferredSize(new Dimension(400, 400));
-		panneauDeJeu.setBackground(couleur);
+		panneauDeJeu.setBackground(Color.WHITE);
+
 
 		for(int i = 0; i < 16; i++) {
 
 			JButton bouton = new JButton();
 			bouton.setFont(new Font("Arial", Font.PLAIN, 20));
+			bouton.setBackground(couleur);
+			bouton.setOpaque(true);
+			bouton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			cases[i] = bouton;
 			panneauDeJeu.add(cases[i]);
 		}
@@ -95,6 +115,9 @@ public class FenetrePrincipale extends JFrame {
 					JButton bouton = new JButton();
 					bouton.setFont(new Font("Arial", Font.PLAIN, 20));
 					bouton.addActionListener(new EcouteurCase(v, w, partie, parent));
+					bouton.setBackground(couleur);
+					bouton.setOpaque(true);
+					bouton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 					cases[i] = bouton;
 					panneauDeJeu.add(cases[i]);
 					v++;
@@ -117,6 +140,9 @@ public class FenetrePrincipale extends JFrame {
 
 					JButton bouton = new JButton();
 					bouton.setFont(new Font("Arial", Font.PLAIN, 20));
+					bouton.setBackground(couleur);
+					bouton.setOpaque(true);
+					bouton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 					cases[i] = bouton;
 					panneauDeJeu.add(cases[i]);
 				}
@@ -140,7 +166,7 @@ public class FenetrePrincipale extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//choixCouleur.setVisible(true);
 				couleur = JColorChooser.showDialog(null, "couleur du fond", couleur);
-				getContentPane().getComponent(0).setBackground(couleur);
+				updateTabCases();
 	        }
 		});
 		
@@ -219,6 +245,9 @@ public class FenetrePrincipale extends JFrame {
 			JButton bouton = new JButton();
 			bouton.setFont(new Font("Arial", Font.PLAIN, 20));
 			bouton.addActionListener(new EcouteurCase(v, w, partie, this));
+			bouton.setBackground(couleur);
+			bouton.setOpaque(true);
+			bouton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			cases[i] = bouton;
 			panneauDeJeu.add(cases[i]);
 			v++;
@@ -251,6 +280,9 @@ public class FenetrePrincipale extends JFrame {
 
 				JButton bouton = new JButton();
 				bouton.setFont(new Font("Arial", Font.PLAIN, 20));
+				bouton.setBackground(couleur);
+				bouton.setOpaque(true);
+				bouton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				cases[i] = bouton;
 				panneauDeJeu.add(cases[i]);
 			}
