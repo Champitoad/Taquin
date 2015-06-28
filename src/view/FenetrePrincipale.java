@@ -101,6 +101,17 @@ public class FenetrePrincipale extends JFrame {
 		itemArreterPartie.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				partie.arreter();
+				panneauDeJeu.removeAll();
+				for(int i = 0; i < 16; i++) {
+					JButton bouton = new JButton();
+					bouton.setFont(new Font("Arial", Font.PLAIN, 20));
+					bouton.addActionListener(new EcouteurCase());
+					cases[i] = bouton;
+					panneauDeJeu.add(cases[i]);
+				}
+				
+				updateCases(partie.getGrille().getMatrice());
+				validate();
 				itemArreterPartie.setEnabled(false);
 				itemNouvellePartie.setEnabled(true);
 	        }
