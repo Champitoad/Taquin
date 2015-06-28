@@ -26,6 +26,10 @@ public class GrilleTaquin
 		return matrice;
 	}
 	
+	public Vector getCaseVide(){
+		return caseVide;
+	}
+	
 	public void deplacer(Direction direction) throws ArrayIndexOutOfBoundsException
 	{
 		Vector caseADeplacer = new Vector(caseVide.x, caseVide.y);

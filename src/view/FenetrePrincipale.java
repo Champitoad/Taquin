@@ -33,7 +33,7 @@ public class FenetrePrincipale extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setContentPane(contPane());
-		setJMenuBar(menuBar());
+		setJMenuBar(menuBar(this));
 		pack();
 		setVisible(true);
 	}
@@ -47,11 +47,11 @@ public class FenetrePrincipale extends JFrame {
 		panneauDeJeu = new JPanel(new GridLayout(4,4));
 		panneauDeJeu.setPreferredSize(new Dimension(400, 400));
 		panneauDeJeu.setBackground(couleur);
-		
+
 		for(int i = 0; i < 16; i++) {
+
 			JButton bouton = new JButton();
 			bouton.setFont(new Font("Arial", Font.PLAIN, 20));
-			bouton.addActionListener(new EcouteurCase());
 			cases[i] = bouton;
 			panneauDeJeu.add(cases[i]);
 		}
@@ -62,7 +62,7 @@ public class FenetrePrincipale extends JFrame {
 		return contPane;
 	}
 	
-	public JMenuBar menuBar() {
+	public JMenuBar menuBar(FenetrePrincipale parent) {
 		JMenuBar menuBar = new JMenuBar();
 		
 		JMenu menuPartie = new JMenu("Partie");
@@ -82,12 +82,20 @@ public class FenetrePrincipale extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				partie.nouvelle();
 				panneauDeJeu.removeAll();
+				int v = 0;
+				int w = 0;
 				for(int i = 0; i < 16; i++) {
+					
+					if(i%4 ==0 && i!= 0){
+						v = 0;
+						w ++;
+					}
 					JButton bouton = new JButton();
 					bouton.setFont(new Font("Arial", Font.PLAIN, 20));
-					bouton.addActionListener(new EcouteurCase());
+					bouton.addActionListener(new EcouteurCase(v, w, partie, parent));
 					cases[i] = bouton;
 					panneauDeJeu.add(cases[i]);
+					v++;
 				}
 				
 				updateCases(partie.getGrille().getMatrice());
@@ -102,10 +110,11 @@ public class FenetrePrincipale extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				partie.arreter();
 				panneauDeJeu.removeAll();
+
 				for(int i = 0; i < 16; i++) {
+
 					JButton bouton = new JButton();
 					bouton.setFont(new Font("Arial", Font.PLAIN, 20));
-					bouton.addActionListener(new EcouteurCase());
 					cases[i] = bouton;
 					panneauDeJeu.add(cases[i]);
 				}
@@ -195,6 +204,28 @@ public class FenetrePrincipale extends JFrame {
 		}
 	}
 
+	public void updateTabCases(){
+		panneauDeJeu.removeAll();
+		int v = 0;
+		int w = 0;
+		for(int i = 0; i < 16; i++) {
+			
+			if(i%4 ==0 && i!= 0){
+				v = 0;
+				w ++;
+			}
+			JButton bouton = new JButton();
+			bouton.setFont(new Font("Arial", Font.PLAIN, 20));
+			bouton.addActionListener(new EcouteurCase(v, w, partie, this));
+			cases[i] = bouton;
+			panneauDeJeu.add(cases[i]);
+			v++;
+		}
+		
+		updateCases(partie.getGrille().getMatrice());
+		validate();
+	}
+	
 	public static void main(String[] args) {
 		FenetrePrincipale fenetre = new FenetrePrincipale();
 		/*
