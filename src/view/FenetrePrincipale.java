@@ -17,6 +17,7 @@ public class FenetrePrincipale extends JFrame {
 	private ChoixCouleur choixCouleur;
 	private JButton[] cases = new JButton[16];
 	private Color couleur = Color.BLUE;
+	JPanel panneauDeJeu;
 
 	public FenetrePrincipale() {
 		super("Taquin");
@@ -43,7 +44,7 @@ public class FenetrePrincipale extends JFrame {
 		contPane.setLayout(new BorderLayout());
 		contPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
-		JPanel panneauDeJeu = new JPanel(new GridLayout(4,4));
+		panneauDeJeu = new JPanel(new GridLayout(4,4));
 		panneauDeJeu.setPreferredSize(new Dimension(400, 400));
 		panneauDeJeu.setBackground(couleur);
 		
@@ -80,6 +81,17 @@ public class FenetrePrincipale extends JFrame {
 		itemNouvellePartie.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				partie.nouvelle();
+				panneauDeJeu.removeAll();
+				for(int i = 0; i < 16; i++) {
+					JButton bouton = new JButton();
+					bouton.setFont(new Font("Arial", Font.PLAIN, 20));
+					bouton.addActionListener(new EcouteurCase());
+					cases[i] = bouton;
+					panneauDeJeu.add(cases[i]);
+				}
+				
+				updateCases(partie.getGrille().getMatrice());
+				validate();
 				itemArreterPartie.setEnabled(true);
 				itemNouvellePartie.setEnabled(false);
 	        }
