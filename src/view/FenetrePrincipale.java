@@ -209,7 +209,7 @@ public class FenetrePrincipale extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				 t = new Timer();
-				 t.schedule(new MonAction(), 0, 1*1000);
+				 t.schedule(new AutomaticSolution(), 0, 1*700);
 	        }
 		});
 		
@@ -219,14 +219,18 @@ public class FenetrePrincipale extends JFrame {
 		
 		return menuBar;
 	}
-	class MonAction extends TimerTask {
+	class AutomaticSolution extends TimerTask {
 	    int nbrRepetitions = 3;
 
 	    public void run() {
 	      solution();
-	      if(partie.getGrille().getPileCoups().getNbCoup()==0){
-	    	  t.cancel();
-	      }
+		     try{
+			      if(partie.getGrille().getPileCoups().getNbCoup()==0){
+			    	  t.cancel();
+			      }
+		     }catch(NullPointerException e){
+		    	 t.cancel();
+		     }
 	    }
 	}
 	
@@ -352,6 +356,8 @@ public class FenetrePrincipale extends JFrame {
 			validate();
 			itemArreterPartie.setEnabled(false);
 			itemNouvellePartie.setEnabled(true);
+			itemCoupSuivantAide.setEnabled(false);
+			itemSolutionAide.setEnabled(false);
 		}
 	}
 	
