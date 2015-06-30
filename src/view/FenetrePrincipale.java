@@ -88,7 +88,7 @@ public class FenetrePrincipale extends JFrame {
 		return contPane;
 	}
 	
-	public JMenuBar menuBar(FenetrePrincipale parent) {
+	public JMenuBar menuBar(final FenetrePrincipale parent) {
 		JMenuBar menuBar = new JMenuBar();
 		
 		JMenu menuPartie = new JMenu("Partie");
