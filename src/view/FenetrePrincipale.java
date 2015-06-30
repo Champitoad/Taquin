@@ -46,6 +46,7 @@ public class FenetrePrincipale extends JFrame {
 	JMenuItem itemCoupSuivantAide;
 	JMenuItem itemSolutionAide;
 	JMenuItem itemImageParametre;
+	JMenuItem itemCouleurParametre;
 	Timer t;
 	File fichier;
 	String image;
@@ -142,7 +143,8 @@ public class FenetrePrincipale extends JFrame {
 				itemNouvellePartie.setEnabled(false);
 				itemCoupSuivantAide.setEnabled(true);
 				itemSolutionAide.setEnabled(true);
-				itemImageParametre.setEnabled(true);
+				itemImageParametre.setEnabled(false);
+				itemCouleurParametre.setEnabled(false);
 	        }
 			
 		});
@@ -169,6 +171,8 @@ public class FenetrePrincipale extends JFrame {
 				itemNouvellePartie.setEnabled(true);
 				itemCoupSuivantAide.setEnabled(false);
 				itemSolutionAide.setEnabled(false);
+				itemImageParametre.setEnabled(true);
+				itemCouleurParametre.setEnabled(true);
 	        }
 			
 		});
@@ -176,7 +180,7 @@ public class FenetrePrincipale extends JFrame {
 		menuPartie.add(itemNouvellePartie);
 		menuPartie.add(itemArreterPartie);
 		
-		JMenuItem itemCouleurParametre = new JMenuItem("Couleur");
+		itemCouleurParametre = new JMenuItem("Couleur");
 		itemImageParametre = new JMenuItem("Image");
 		itemImageParametre.setEnabled(true);
 		
@@ -215,6 +219,7 @@ public class FenetrePrincipale extends JFrame {
 		itemSolutionAide = new JMenuItem("Solution");
 		itemSolutionAide.setEnabled(false);
 		itemImageParametre.setEnabled(true);
+		itemCouleurParametre.setEnabled(true);
 		
 		itemRegleAide.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
@@ -382,6 +387,8 @@ public class FenetrePrincipale extends JFrame {
 			itemCoupSuivantAide.setEnabled(false);
 			itemSolutionAide.setEnabled(false);
 			itemImageParametre.setEnabled(false);
+			itemImageParametre.setEnabled(true);
+			itemCouleurParametre.setEnabled(true);
 		}
 	}
 	
