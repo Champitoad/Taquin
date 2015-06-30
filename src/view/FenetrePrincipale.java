@@ -142,6 +142,7 @@ public class FenetrePrincipale extends JFrame {
 				itemNouvellePartie.setEnabled(false);
 				itemCoupSuivantAide.setEnabled(true);
 				itemSolutionAide.setEnabled(true);
+				itemImageParametre.setEnabled(true);
 	        }
 			
 		});
