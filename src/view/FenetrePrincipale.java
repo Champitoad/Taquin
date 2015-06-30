@@ -6,11 +6,19 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.awt.image.CropImageFilter;
+import java.awt.image.FilteredImageSource;
 import java.io.IOException;
 import java.net.URL;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,6 +27,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -27,6 +36,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.Direction;
 import controller.Partie;
@@ -34,18 +44,16 @@ import controller.Partie;
 public class FenetrePrincipale extends JFrame {
 	
 	private Partie partie;
-	//private ChoixCouleur choixCouleur;
-	//private ChoixImage choixImage;
 	private Regles regles;
-	private ChoixCouleur choixCouleur;
 	private JButton[] cases = new JButton[16];
-	private BufferedImage[] imagesCases;
+	private Image[] imagesCases;
 	private Color couleur = Color.BLUE;
 	JPanel panneauDeJeu;
 	JMenuItem itemNouvellePartie;
 	JMenuItem itemArreterPartie;
 	JMenuItem itemCoupSuivantAide;
 	JMenuItem itemSolutionAide;
+	JMenuItem itemImageParametre;
 	Timer t;
 
 	public FenetrePrincipale() {
@@ -56,8 +64,6 @@ public class FenetrePrincipale extends JFrame {
 		    e.getMessage();
 		}
 		partie = new Partie();
-		choixCouleur = new ChoixCouleur(this, "Choix couleur");
-		//choixImage = new ChoixImage("Choix image");
 		regles = new Regles(this, "Règles");
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -114,53 +120,19 @@ public class FenetrePrincipale extends JFrame {
 		itemNouvellePartie.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				partie.nouvelle();
-				panneauDeJeu.removeAll();
-				int v = 0;
-				int w = 0;
-				for(int i = 0; i < 16; i++) {
-					
-					if(i%4 ==0 && i!= 0){
-						v = 0;
-						w ++;
-					}
-					JButton bouton = new JButton();
-					bouton.setFont(new Font("Arial", Font.PLAIN, 20));
-					bouton.addActionListener(new EcouteurCase(v, w, partie, parent));
-					bouton.setBackground(couleur);
-					bouton.setOpaque(true);
-					bouton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-					cases[i] = bouton;
-					panneauDeJeu.add(cases[i]);
-					v++;
-				}
-				
-				updateCases(partie.getGrille().getMatrice());
-				validate();
+				updateTabCases();
 				itemArreterPartie.setEnabled(true);
 				itemNouvellePartie.setEnabled(false);
 				itemCoupSuivantAide.setEnabled(true);
 				itemSolutionAide.setEnabled(true);
+				itemImageParametre.setEnabled(true);
 	        }
 		});
 		
 		itemArreterPartie.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				partie.arreter();
-				panneauDeJeu.removeAll();
-
-				for(int i = 0; i < 16; i++) {
-
-					JButton bouton = new JButton();
-					bouton.setFont(new Font("Arial", Font.PLAIN, 20));
-					bouton.setBackground(couleur);
-					bouton.setOpaque(true);
-					bouton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-					cases[i] = bouton;
-					panneauDeJeu.add(cases[i]);
-				}
-				
-				updateCases(partie.getGrille().getMatrice());
-				validate();
+				updateTabCases();
 				itemArreterPartie.setEnabled(false);
 				itemNouvellePartie.setEnabled(true);
 				itemCoupSuivantAide.setEnabled(false);
@@ -173,12 +145,11 @@ public class FenetrePrincipale extends JFrame {
 		menuPartie.add(itemArreterPartie);
 		
 		JMenuItem itemCouleurParametre = new JMenuItem("Couleur");
-		JMenuItem itemImageParametre = new JMenuItem("Image");
-		itemImageParametre.setEnabled(false);
+		itemImageParametre = new JMenuItem("Image");
+		itemImageParametre.setEnabled(true);
 		
 		itemCouleurParametre.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				//choixCouleur.setVisible(true);
 				couleur = JColorChooser.showDialog(null, "couleur du fond", couleur);
 				updateTabCases();
 	        }
@@ -186,7 +157,25 @@ public class FenetrePrincipale extends JFrame {
 		
 		itemImageParametre.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				//choixImage.setVisible(true);
+				JFileChooser dialogue = new JFileChooser(new File("."));
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & png", "jpg", "png");
+				dialogue.setFileFilter(filter);
+				
+				if (dialogue.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+					BufferedImage img = null;
+					
+					while(img == null) {
+						File fichier = dialogue.getSelectedFile();			 
+						try {
+							img = ImageIO.read(fichier);
+						} catch(IOException ioe) {
+							System.out.println(ioe);
+						}
+					}
+					
+					updateImagesCases(img);
+					updateTabCases();
+				}
 	        }
 		});
 		
@@ -198,6 +187,7 @@ public class FenetrePrincipale extends JFrame {
 		itemCoupSuivantAide.setEnabled(false);
 		itemSolutionAide = new JMenuItem("Solution");
 		itemSolutionAide.setEnabled(false);
+		itemImageParametre.setEnabled(true);
 		
 		itemRegleAide.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
@@ -277,8 +267,6 @@ public class FenetrePrincipale extends JFrame {
 			}
 			updateTabCases();
 			fin();
-			revalidate();
-			getContentPane().revalidate();
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -296,43 +284,33 @@ public class FenetrePrincipale extends JFrame {
 				if(matrice[i][j] == 0){
 					cases[cpt].setEnabled(false);
 				} else {
-					cases[cpt].setText(""+matrice[i][j]);
+					if(imagesCases == null)
+						cases[cpt].setText(""+matrice[i][j]);
+					else
+						cases[cpt].setIcon(new ImageIcon(imagesCases[matrice[i][j] - 1]));
 				}
 				cpt++;
 			}
 		}
 	}
 	
-	private void updateCases(int[][] matrice, String imagePath) {
-		updateCases(matrice);
-		
-		imagesCases = new BufferedImage[15];
-		
-		BufferedImage img = null;
-		try {
-			img = ImageIO.read(new URL(imagePath));
-		} catch(IOException e) {
-			System.out.println(e);
-		}
-		
-		int cw = img.getWidth() / 4;
-		int ch = img.getHeight() / 4;
+	private void updateImagesCases(BufferedImage img) {		
+		int dim = 4;
+		imagesCases = new Image[dim * dim];
+
+		int cw = img.getWidth() / dim;
+		int ch = img.getHeight() / dim;
 		
 		int cpt = 0;
-        for(int x = 0; x < 4; x++) {
+        for(int x = 0; x < dim; x++) {
             int sx = x * cw;
-            for(int y = 0; y < 4; y++) {
-                int sy = y * ch;
-                int cell = matrice[y][x];
-                int dx = (cell / 4) * cw;
-                int dy = (cell % 4) * ch;
-                imagesCases[cpt] = new BufferedImage(cw, ch, BufferedImage.TYPE_INT_RGB);
-                imagesCases[cpt].getGraphics().drawImage(
-                		img,
-                		dx, dy, dx + cw, dy + ch,
-                		sx, sy, sx + cw, sy + ch,
-                		null);
-                cases[cpt].setIcon(new ImageIcon(imagesCases[cpt]));
+            for(int y = 0; y < dim; y++) {
+		 	int sy = y * ch;
+			    imagesCases[cpt] = Toolkit.getDefaultToolkit().createImage(
+			        new FilteredImageSource(
+			            img.getSource(),
+			            new CropImageFilter(sy, sx, cw, ch)));
+			    cpt++;
             }
         }
 	}
@@ -359,7 +337,6 @@ public class FenetrePrincipale extends JFrame {
 		}
 		
 		updateCases(partie.getGrille().getMatrice());
-		validate();
 	}
 
 	public void fin(){
@@ -379,43 +356,16 @@ public class FenetrePrincipale extends JFrame {
 		if(gagner){
 			JOptionPane.showMessageDialog(this, "Vous avez gagné !", "BRAVO !!!", JOptionPane.PLAIN_MESSAGE,null);
 			partie.arreter();
-			panneauDeJeu.removeAll();
-
-			for(int i = 0; i < 16; i++) {
-
-				JButton bouton = new JButton();
-				bouton.setFont(new Font("Arial", Font.PLAIN, 20));
-				bouton.setBackground(couleur);
-				bouton.setOpaque(true);
-				bouton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				cases[i] = bouton;
-				panneauDeJeu.add(cases[i]);
-			}
-			
-			updateCases(partie.getGrille().getMatrice());
-			validate();
+			updateTabCases();
 			itemArreterPartie.setEnabled(false);
 			itemNouvellePartie.setEnabled(true);
 			itemCoupSuivantAide.setEnabled(false);
 			itemSolutionAide.setEnabled(false);
+			itemImageParametre.setEnabled(false);
 		}
 	}
 	
 	public static void main(String[] args) {
 		FenetrePrincipale fenetre = new FenetrePrincipale();
-		/*
-		Partie partie = new Partie();
-		System.out.println(partie.getGrille());
-		
-		partie.nouvelle();
-		System.out.println(partie.getGrille());
-		
-		try {
-			partie.deplacer(Direction.DROITE);
-			System.out.println(partie.getGrille());
-		} catch(ArrayIndexOutOfBoundsException e) {}
-		
-		partie.arreter();
-		System.out.println(partie.getGrille());*/
 	}
 }
