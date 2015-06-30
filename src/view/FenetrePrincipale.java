@@ -4,13 +4,19 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
@@ -33,6 +39,7 @@ public class FenetrePrincipale extends JFrame {
 	private Regles regles;
 	private ChoixCouleur choixCouleur;
 	private JButton[] cases = new JButton[16];
+	private BufferedImage[] imagesCases;
 	private Color couleur = Color.BLUE;
 	JPanel panneauDeJeu;
 	JMenuItem itemNouvellePartie;
@@ -134,7 +141,6 @@ public class FenetrePrincipale extends JFrame {
 				itemCoupSuivantAide.setEnabled(true);
 				itemSolutionAide.setEnabled(true);
 	        }
-			
 		});
 		
 		itemArreterPartie.addActionListener(new ActionListener () {
@@ -295,6 +301,40 @@ public class FenetrePrincipale extends JFrame {
 				cpt++;
 			}
 		}
+	}
+	
+	private void updateCases(int[][] matrice, String imagePath) {
+		updateCases(matrice);
+		
+		imagesCases = new BufferedImage[15];
+		
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new URL(imagePath));
+		} catch(IOException e) {
+			System.out.println(e);
+		}
+		
+		int cw = img.getWidth() / 4;
+		int ch = img.getHeight() / 4;
+		
+		int cpt = 0;
+        for(int x = 0; x < 4; x++) {
+            int sx = x * cw;
+            for(int y = 0; y < 4; y++) {
+                int sy = y * ch;
+                int cell = matrice[y][x];
+                int dx = (cell / 4) * cw;
+                int dy = (cell % 4) * ch;
+                imagesCases[cpt] = new BufferedImage(cw, ch, BufferedImage.TYPE_INT_RGB);
+                imagesCases[cpt].getGraphics().drawImage(
+                		img,
+                		dx, dy, dx + cw, dy + ch,
+                		sx, sy, sx + cw, sy + ch,
+                		null);
+                cases[cpt].setIcon(new ImageIcon(imagesCases[cpt]));
+            }
+        }
 	}
 
 	public void updateTabCases(){
