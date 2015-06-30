@@ -1,0 +1,60 @@
+= Projet IHM - The Taquin Project
+
+Dossier de conception des élèves : Kueny Gaëtan, Donato Pablo, Fougeras Vincent, Fiette Nicolas
+
+== Schéma de l'interface graphique
+
+=== Fenêtre principale
+image::../srcdoc/fenetrePrincipal.png[]
+
+=== Menu d'aide
+
+image::../srcdoc/menuAide.png[]
+
+=== Menu des paramètres
+
+image::../srcdoc/menuParametre.png[]
+
+=== Menu de lancement de partie
+
+image::../srcdoc/menuLancerSimu.png[]
+
+=== Nouvelle partie
+
+image::../srcdoc/nouvelleSimu.png[]
+
+=== Choix d’une couleur
+
+image::../srcdoc/fenetreChoixCouleur.png[]
+
+== Liste des fonctionnalités du programme
+
+=== Fonctionnalités de base
+
+* Démarrer une partie
+* Arrêter la partie en cours
+* Déplacer une case numérotée dans une case vide
+* Message "Gagné"
+* Aide utilisateur : règles du jeu
+
+=== Fonctionnalités avancées
+
+* Configurer la couleur de la grille
+* Choisir d'afficher une image au lieu de chiffres
+* Aide utilisateur : Proposition de coup suivant
+* Aide utilisateur : Solution complète
+
+== Algorithmes
+
+=== Algorithme de mouvement
+…
+
+=== Algorithme de résolution
+
+ Chaque coups du mélange sont mémorisés dans une pile, puis si l’utilisateur ne fais pas le coup prévu par la résolution, le coup est empilé, sinon il est dépilé.
+ Lors de l’aide « un coup », le système dépile le dernier coup et réalise l’inverse. lors de l’aide « solution complète », le système dépile entièrement la pile en réalisant l’inverse de chaque coup pour revenir à la configuration de départ.
+
+== Architecture des classes
+
+image:../srcdoc/DCP.PNG[]
+
