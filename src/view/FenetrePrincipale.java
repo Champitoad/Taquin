@@ -99,8 +99,8 @@ public class FenetrePrincipale extends JFrame {
 		menuBar.add(menuParametre);
 		menuBar.add(menuAide);
 		
-		itemNouvellePartie = new JMenuItem("Nouvelle ..");
-		itemArreterPartie = new JMenuItem("Arrêter ..");
+		itemNouvellePartie = new JMenuItem("Nouvelle");
+		itemArreterPartie = new JMenuItem("Arrêter");
 		
 		itemArreterPartie.setEnabled(false);
 		
@@ -337,7 +337,7 @@ public class FenetrePrincipale extends JFrame {
 			}
 		}
 		if(gagner){
-			JOptionPane.showMessageDialog(this, "Vous avez gagner !", "BRAVO !!!", JOptionPane.PLAIN_MESSAGE,null);
+			JOptionPane.showMessageDialog(this, "Vous avez gagné !", "BRAVO !!!", JOptionPane.PLAIN_MESSAGE,null);
 			partie.arreter();
 			panneauDeJeu.removeAll();
 
