@@ -33,11 +33,6 @@ image:../srcdoc/ClicPartie.png[]
 * Aide utilisateur : Proposition de coup suivant
 * Aide utilisateur : Solution complète
 
-=== Fonctionnalités supplémentaires
-
-* Sauvegarder et charger une partie
-* Importer une image personnelle
-
 == Algorithmes
 
 == Architecture des classes

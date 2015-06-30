@@ -7,12 +7,17 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -21,6 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.Direction;
 import controller.Partie;
@@ -39,7 +45,10 @@ public class FenetrePrincipale extends JFrame {
 	JMenuItem itemArreterPartie;
 	JMenuItem itemCoupSuivantAide;
 	JMenuItem itemSolutionAide;
+	JMenuItem itemImageParametre;
 	Timer t;
+	File fichier;
+	String image;
 
 	public FenetrePrincipale() {
 		super("Taquin");
@@ -167,8 +176,8 @@ public class FenetrePrincipale extends JFrame {
 		menuPartie.add(itemArreterPartie);
 		
 		JMenuItem itemCouleurParametre = new JMenuItem("Couleur");
-		JMenuItem itemImageParametre = new JMenuItem("Image");
-		itemImageParametre.setEnabled(false);
+		itemImageParametre = new JMenuItem("Image");
+		itemImageParametre.setEnabled(true);
 		
 		itemCouleurParametre.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
@@ -180,7 +189,19 @@ public class FenetrePrincipale extends JFrame {
 		
 		itemImageParametre.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				//choixImage.setVisible(true);
+				JFileChooser dialogue = new JFileChooser(new File("."));
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & png", "jpg", "png");
+				dialogue.setFileFilter(filter);
+				PrintWriter sortie;
+				
+				if (dialogue.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				    fichier = dialogue.getSelectedFile();
+				    
+					 image = fichier.getAbsolutePath();
+					
+					 updateCases(partie.getGrille().getMatrice(), image);
+				
+				}
 	        }
 		});
 		
@@ -192,6 +213,7 @@ public class FenetrePrincipale extends JFrame {
 		itemCoupSuivantAide.setEnabled(false);
 		itemSolutionAide = new JMenuItem("Solution");
 		itemSolutionAide.setEnabled(false);
+		itemImageParametre.setEnabled(true);
 		
 		itemRegleAide.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
@@ -358,6 +380,7 @@ public class FenetrePrincipale extends JFrame {
 			itemNouvellePartie.setEnabled(true);
 			itemCoupSuivantAide.setEnabled(false);
 			itemSolutionAide.setEnabled(false);
+			itemImageParametre.setEnabled(false);
 		}
 	}
 	
