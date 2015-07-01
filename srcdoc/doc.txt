@@ -48,14 +48,14 @@ image::../srcdoc/fenetreChoixCouleur.png[]
 
 === Algorithme de mouvement
 
-	Lorsque l'utilisateur clique sur une case, le systeme vérifie si la case est a coté de la case vide et si oui interéchange leur position
+	Lorsque l'utilisateur clique sur une case, le système vérifie si la case est à côté de la case vide et si oui échange leurs positions.
 
 === Algorithme de résolution
 
- Chaque coups du mélange sont mémorisés dans une pile, puis si l’utilisateur ne fais pas le coup prévu par la résolution, le coup est empilé, sinon il est dépilé.
- Lors de l’aide « un coup », le système dépile le dernier coup et réalise l’inverse. lors de l’aide « solution complète », le système dépile entièrement la pile en réalisant l’inverse de chaque coup pour revenir à la configuration de départ.
+ Chaque coup du mélange est mémorisé dans une pile : si l’utilisateur ne fait pas le coup prévu par la résolution, le coup est empilé, sinon il est dépilé.
+ Lors de l’aide « un coup », le système dépile le dernier coup et réalise l’inverse. Lors de l’aide « solution complète », le système dépile entièrement la pile en réalisant l’inverse de chaque coup pour revenir à la configuration de départ.
 
 == Architecture des classes
 
-image:../srcdoc/DCP.PNG[]
+image:../srcdoc/DCP.png[]
 
