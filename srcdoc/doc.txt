@@ -47,7 +47,8 @@ image::../srcdoc/fenetreChoixCouleur.png[]
 == Algorithmes
 
 === Algorithme de mouvement
-…
+
+	Lorsque l'utilisateur clique sur une case, le systeme vérifie si la case est a coté de la case vide et si oui interéchange leur position
 
 === Algorithme de résolution
 
