@@ -68,7 +68,7 @@ public class FenetrePrincipale extends JFrame {
 		}
 		partie = new Partie();
 		regles = new Regles(this, "Règles");
-		//setResizable(false);
+		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setContentPane(contPane());
 		setJMenuBar(menuBar(this));
