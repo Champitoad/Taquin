@@ -201,6 +201,7 @@ public class FenetrePrincipale extends JFrame {
 				if(imageValide) {
 					updateImagesCases(img);
 					updateTabCases();
+					setSize(img.getWidth() +51 ,img.getHeight() + 95);
 					for(int i=0; i<16; i++){
 						cases[i].removeActionListener(ecouteur[i]);
 					}
