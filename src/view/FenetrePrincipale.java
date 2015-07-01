@@ -159,7 +159,8 @@ public class FenetrePrincipale extends JFrame {
 		
 		itemCouleurParametre.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				couleur = JColorChooser.showDialog(null, "couleur du fond", couleur);
+				couleur = JColorChooser.showDialog(FenetrePrincipale.this, "Couleur du fond", couleur);
+				
 				imagesCases=null;
 				updateTabCases();
 				for(int i=0; i<16; i++){
@@ -178,7 +179,7 @@ public class FenetrePrincipale extends JFrame {
 				BufferedImage img = null;
 				boolean imageValide = false;
 				
-				while(!imageValide && dialogue.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				while(!imageValide && dialogue.showOpenDialog(FenetrePrincipale.this) == JFileChooser.APPROVE_OPTION) {
 					File fichier = dialogue.getSelectedFile();			 
 					try {
 						img = ImageIO.read(fichier);
@@ -186,15 +187,15 @@ public class FenetrePrincipale extends JFrame {
 						int h = img.getHeight();
 						int scrH = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 						if(w != h)
-							JOptionPane.showMessageDialog(null, "Veuillez sélectionner une image carrée", "Erreur", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(FenetrePrincipale.this, "Veuillez sélectionner une image carrée", "Erreur", JOptionPane.ERROR_MESSAGE);
 						else if(w < 100 || w > scrH - 50) {
-							JOptionPane.showMessageDialog(null, "Veuillez sélectionner une image d'une taille comprise entre 100 et " + (scrH - 50) + " pixels", "Erreur", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(FenetrePrincipale.this, "Veuillez sélectionner une image d'une taille comprise entre 100 et " + (scrH - 50) + " pixels", "Erreur", JOptionPane.ERROR_MESSAGE);
 						} else {
 							imageValide = true;
 							imageSize = w;
 						}
 					} catch(IOException ioe) {
-						JOptionPane.showMessageDialog(null, "" + ioe, "Erreur", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(FenetrePrincipale.this, "" + ioe, "Erreur", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				
