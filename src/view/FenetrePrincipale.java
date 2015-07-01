@@ -185,7 +185,7 @@ public class FenetrePrincipale extends JFrame {
 							System.out.println(ioe);
 						}
 					}
-					
+					setSize(img.getWidth() +51 ,img.getHeight() + 95);
 					updateImagesCases(img);
 					updateTabCases();
 					for(int i=0; i<16; i++){
