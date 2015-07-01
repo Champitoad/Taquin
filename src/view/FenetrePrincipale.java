@@ -57,6 +57,7 @@ public class FenetrePrincipale extends JFrame {
 	JMenuItem itemImageParametre;
 	JMenuItem itemCouleurParametre;
 	Timer t;
+	EcouteurCase[] ecouteur;
 
 	public FenetrePrincipale() {
 		super("Taquin");
@@ -136,6 +137,9 @@ public class FenetrePrincipale extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				partie.arreter();
 				updateTabCases();
+				for(int i=0; i<16; i++){
+					cases[i].removeActionListener(ecouteur[i]);
+				}
 				itemArreterPartie.setEnabled(false);
 				itemNouvellePartie.setEnabled(true);
 				itemCoupSuivantAide.setEnabled(false);
@@ -156,7 +160,12 @@ public class FenetrePrincipale extends JFrame {
 		itemCouleurParametre.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				couleur = JColorChooser.showDialog(null, "couleur du fond", couleur);
+				imagesCases=null;
 				updateTabCases();
+				for(int i=0; i<16; i++){
+					cases[i].removeActionListener(ecouteur[i]);
+
+				}
 	        }
 		});
 		
@@ -192,6 +201,10 @@ public class FenetrePrincipale extends JFrame {
 				if(imageValide) {
 					updateImagesCases(img);
 					updateTabCases();
+					for(int i=0; i<16; i++){
+						cases[i].removeActionListener(ecouteur[i]);
+					}
+	
 				}
 	        }
 		});
@@ -334,6 +347,7 @@ public class FenetrePrincipale extends JFrame {
 		panneauDeJeu.removeAll();
 		int v = 0;
 		int w = 0;
+		ecouteur = new EcouteurCase[16];
 		for(int i = 0; i < 16; i++) {
 			
 			if(i%4 ==0 && i!= 0){
@@ -345,7 +359,8 @@ public class FenetrePrincipale extends JFrame {
 				bouton.setPreferredSize(new Dimension(imageSize, imageSize));
 			}
 			bouton.setFont(new Font("Arial", Font.PLAIN, 20));
-			bouton.addActionListener(new EcouteurCase(v, w, partie, this));
+			ecouteur[i] = new EcouteurCase(v, w, partie, this);
+			bouton.addActionListener(ecouteur[i] );
 			bouton.setBackground(couleur);
 			bouton.setOpaque(true);
 			bouton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -382,6 +397,9 @@ public class FenetrePrincipale extends JFrame {
 			itemImageParametre.setEnabled(false);
 			itemImageParametre.setEnabled(true);
 			itemCouleurParametre.setEnabled(true);
+			for(int i=0; i<16; i++){
+				cases[i].removeActionListener(ecouteur[i]);
+			}
 		}
 	}
 	

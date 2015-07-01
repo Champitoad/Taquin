@@ -13,8 +13,6 @@ class PileCoups {
 }
 class Vector{
 }
-class ChoixCouleur{
-}
 class EcouteurCase {
 }
 class FenetrePrincipale {
@@ -26,9 +24,8 @@ class Regles {
 
 utilisateur -- FenetrePrincipale:jouer
 FenetrePrincipale "1"-- "0..1"Partie
-FenetrePrincipale "1"-- "0..1"ChoixCouleur
 FenetrePrincipale "1"-- "0..1"Regles
-FenetrePrincipale "1"-- "0.."EcouteurCase
+FenetrePrincipale "1"-- "0..*"EcouteurCase
 Partie "1" -- "0..1"GrilleTaquin
 GrilleTaquin "1" -- "0..1" Vector
 GrilleTaquin "1" -- "0..1" PileCoups
