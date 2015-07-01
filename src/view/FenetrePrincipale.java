@@ -46,6 +46,7 @@ public class FenetrePrincipale extends JFrame {
 	private Partie partie;
 	private Regles regles;
 	private JButton[] cases = new JButton[16];
+	private int imageSize;
 	private Image[] imagesCases;
 	private Color couleur = Color.BLUE;
 	JPanel panneauDeJeu;
@@ -67,7 +68,7 @@ public class FenetrePrincipale extends JFrame {
 		}
 		partie = new Partie();
 		regles = new Regles(this, "Règles");
-		setResizable(false);
+		//setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setContentPane(contPane());
 		setJMenuBar(menuBar(this));
@@ -174,18 +175,30 @@ public class FenetrePrincipale extends JFrame {
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & png", "jpg", "png");
 				dialogue.setFileFilter(filter);
 				
-				if (dialogue.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-					BufferedImage img = null;
-					
-					while(img == null) {
-						File fichier = dialogue.getSelectedFile();			 
-						try {
-							img = ImageIO.read(fichier);
-						} catch(IOException ioe) {
-							System.out.println(ioe);
+				BufferedImage img = null;
+				boolean imageValide = false;
+				
+				while(!imageValide && dialogue.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+					File fichier = dialogue.getSelectedFile();			 
+					try {
+						img = ImageIO.read(fichier);
+						int w = img.getWidth();
+						int h = img.getHeight();
+						int scrH = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+						if(w != h)
+							JOptionPane.showMessageDialog(null, "Veuillez sélectionner une image carrée", "Erreur", JOptionPane.ERROR_MESSAGE);
+						else if(w < 100 || w > scrH - 50) {
+							JOptionPane.showMessageDialog(null, "Veuillez sélectionner une image d'une taille comprise entre 100 et " + (scrH - 50) + " pixels", "Erreur", JOptionPane.ERROR_MESSAGE);
+						} else {
+							imageValide = true;
+							imageSize = w;
 						}
+					} catch(IOException ioe) {
+						JOptionPane.showMessageDialog(null, "" + ioe, "Erreur", JOptionPane.ERROR_MESSAGE);
 					}
-					setSize(img.getWidth() +51 ,img.getHeight() + 95);
+				}
+				
+				if(imageValide) {
 					updateImagesCases(img);
 					updateTabCases();
 					for(int i=0; i<16; i++){
@@ -314,20 +327,17 @@ public class FenetrePrincipale extends JFrame {
 	
 	private void updateImagesCases(BufferedImage img) {		
 		int dim = 4;
+		int cdim = img.getWidth() / dim;
 		imagesCases = new Image[dim * dim];
-
-		int cw = img.getWidth() / dim;
-		int ch = img.getHeight() / dim;
-		
 		int cpt = 0;
         for(int x = 0; x < dim; x++) {
-            int sx = x * cw;
+            int sx = x * cdim;
             for(int y = 0; y < dim; y++) {
-		 	int sy = y * ch;
+		 	int sy = y * cdim;
 			    imagesCases[cpt] = Toolkit.getDefaultToolkit().createImage(
 			        new FilteredImageSource(
 			            img.getSource(),
-			            new CropImageFilter(sy, sx, cw, ch)));
+			            new CropImageFilter(sy, sx, cdim, cdim)));
 			    cpt++;
             }
         }
@@ -345,6 +355,9 @@ public class FenetrePrincipale extends JFrame {
 				w ++;
 			}
 			JButton bouton = new JButton();
+			if(imagesCases != null) {
+				bouton.setPreferredSize(new Dimension(imageSize, imageSize));
+			}
 			bouton.setFont(new Font("Arial", Font.PLAIN, 20));
 			ecouteur[i] = new EcouteurCase(v, w, partie, this);
 			bouton.addActionListener(ecouteur[i] );
